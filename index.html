@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Contraseña</title>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.32/build/spline-viewer.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background: #000;
+        }
+
+        spline-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+        }
+
+        .container {
+            width: 400px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            color: #fff;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            /* Aquí puedes insertar una imagen de logo en 3D */
+        }
+
+        .password-container {
+            margin-bottom: 20px;
+        }
+
+        .password {
+            font-size: 20px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .timer {
+            font-size: 14px;
+            color: #ff0000;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            background-color: #555;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        .flag-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .flag-buttons img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Fondo con Spline -->
+    <spline-viewer url="https://prod.spline.design/4OubZopOs0jlpCTa/scene.splinecode"></spline-viewer>
+
+    <!-- Contenedor traslúcido -->
+    <div class="container">
+        <div class="logohd.png"></div>
+        <h2>Validador de Contraseña</h2>
+
+        <div class="password-container">
+            <div class="password" id="password">********</div>
+            <div class="timer" id="timer">40 segundos restantes</div>
+            <button id="copy-btn">Copiar Contraseña</button>
+        </div>
+
+        <button id="validate-btn">Validar</button>
+
+        <div class="flag-buttons">
+            <img src="https://flagcdn.com/w40/es.png" alt="España" onclick="changeLanguage('es')">
+            <img src="https://flagcdn.com/w40/us.png" alt="USA" onclick="changeLanguage('en')">
+            <img src="https://flagcdn.com/w40/fr.png" alt="Francia" onclick="changeLanguage('fr')">
+            <img src="https://flagcdn.com/w40/cn.png" alt="China" onclick="changeLanguage('zh')">
+            <img src="https://flagcdn.com/w40/it.png" alt="Italia" onclick="changeLanguage('it')">
+        </div>
+    </div>
+
+    <script>
+        // Función para generar contraseñas aleatorias
+        function generatePassword() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let password = '';
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return password;
+        }
+
+        // Inicializar variables
+        let currentPassword = generatePassword();
+        document.getElementById('password').innerText = currentPassword;
+        let timeLeft = 40;
+        const timerElement = document.getElementById('timer');
+
+        // Contador regresivo y cambio de contraseña cada 40 segundos
+        function updateTimer() {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timerElement.innerText = timeLeft + ' segundos restantes';
+            } else {
+                timeLeft = 40;
+                currentPassword = generatePassword();
+                document.getElementById('password').innerText = currentPassword;
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+
+        // Copiar contraseña al portapapeles
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            navigator.clipboard.writeText(currentPassword);
+            alert('Contraseña copiada al portapapeles');
+        });
+
+        // Validar y redirigir
+        document.getElementById('validate-btn').addEventListener('click', () => {
+            const enteredPassword = prompt('Introduce la contraseña:');
+            if (enteredPassword === currentPassword) {
+                window.location.href = 'https://8x8.vc/vpaas-magic-cookie-f6824533bb164d58a615b5624cd75181/room1';
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+        });
+
+        // Cambiar idioma
+        function changeLanguage(lang) {
+            alert('Idioma cambiado a: ' + lang); // Aquí podrías integrar un sistema de traducción
+        }
+    </script>
+</body>
+</html>
